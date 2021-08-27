@@ -75,10 +75,13 @@ class Interactor
         $employee = $this->employeeProvider->getEmployee($employeeId);
         $poll = $this->pollProvider->getPoll($pollId);
         $dish = $this->dishProvider->getDish($dishId);
+        $pollMenu = $poll->getMenu();
+        $dishList = $pollMenu->getDishes();
 
         $this->userHasAccessToPollsValidator->validate($employee->getUser());
         $this->pollIsActiveValidator->validate($poll);
-        $this->dishInPollDishListValidator->validate($poll,$dish);
+
+        $this->dishInPollDishListValidator->validate($dishList,$dish);
         $this->pollResultCreateTimeValidator->validate($timestamp);
 
         return $this->pollResultProvider->createPollResult($poll, $employee, $dish);
